@@ -1,0 +1,14 @@
+<%= form_for @product do |f| %>
+    <h1>Create Product</h1>
+    <div>
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+    </div>
+    <div>
+      <%= f.label :value %><br>
+      <%= f.number_field :value, :step => 'any' %> THB
+    </div>
+    <div>
+      <%= f.submit %>
+    </div>
+<% end %>
