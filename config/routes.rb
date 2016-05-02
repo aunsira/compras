@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'welcome#index'
+  root to: 'pages#index'
   resources :products
+  get 'shops', to: 'shops#new'
+  post 'add_cart', to: 'shops#create'
 end
