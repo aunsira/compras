@@ -1,0 +1,58 @@
+<%= form_tag add_cart_path, id: "shopping" do %>
+    <p>Pick a goods:</p>
+
+    <ul>
+      <% Product.all.each do |product| %>
+        <li>
+          <%= radio_button_tag :product, product.id %>
+          <%= label_tag "product_#{product.id}", product.name %> | <%= label_tag "#{product.value}" %>
+        </li>
+        <%= hidden_field_tag :value, product.value %>
+      <% end %>
+    </ul>
+
+    <% if @token && @token.card.security_code_check %>
+      <%= hidden_field_tag :omise_token, @token.id %>
+      <div>
+        Number<br>
+        **** **** **** <%= @token.card.last_digits %>
+      </div>
+      <div>
+        Name (as on card)<br>
+        <%= @token.card.name %>
+      </div>
+      <div>
+        Expires<br>
+        <%= @token.card.expiration_month %> / <%= @token.card.expiration_year %>
+      </div>
+      <div>
+        Security Code<br>
+        ***
+      </div>
+      <%= link_to 'Or use another card', add_cart_path %>
+    <% else %>
+        <%= hidden_field_tag :omise_token %>
+        <div>
+          Number<br>
+          <%= text_field_tag nil, nil, placeholder: "XXXX XXXX XXXX XXXX", data: { omise: "number"} %>
+        </div>
+        <div>
+          Name (as on card)<br>
+          <%= text_field_tag nil, nil, placeholder: "aun", data: { omise: "holder_name"} %>
+        </div>
+        <div>
+          Expires<br>
+          <%= text_field_tag nil,nil, size: 4, placeholder: "XX", data: { omise: "expiration_month" } %>
+          /
+          <%= text_field_tag nil, nil, size: 4, placeholder: "XX", data: { omise: "expiration_year" } %>
+        </div>
+        <div>
+          Security Code<br>
+          <%= text_field_tag nil, nil, size: 8, placeholder: "XXX", data: { omise: "security_code" } %>
+        </div>
+    <% end %>
+    <div>
+      <%= submit_tag 'Buy' %>
+      <span class="cc_error"></span>
+    </div>
+<% end %>
